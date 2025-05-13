@@ -1,4 +1,5 @@
-// step 5
+// step 7
+
 #include <iostream>
 #include <math.h>
 
@@ -6,8 +7,8 @@
 __global__ void add(int n, float *x, float *y)
 {
     // Compute the thread's unique index and stride
-    int index = threadIdx.x;
-    int stride = blockDim.x;
+    int index = blockIdx.x * blockDim.x + threadIdx.x;
+    int stride = blockDim.x * gridDim.x;
 
     // Each thread processes a subset of the array
     for (int i = index; i < n; i += stride)
@@ -31,12 +32,15 @@ int main(void)
         y[i] = 2.0f;
     }
 
-    // Launch kernel with 256 threads and 1 block
-    int threads_per_block = 256;
-    int blocks_per_grid = 1;
+    // Define block size and calculate the number of blocks
+    int blockSize = 256;
+    int numBlocks = (N + blockSize - 1) / blockSize;
 
-    // from the NVIDIA tutotial article
-    add<<<1, 256>>>(N, x, y);
+    // Print the number of thread blocks
+    std::cout << "Number of thread blocks: " << numBlocks << std::endl;
+
+    // Launch kernel with calculated number of blocks and threads per block
+    add<<<numBlocks, blockSize>>>(N, x, y);
 
     // Wait for GPU to finish before accessing on host
     cudaDeviceSynchronize();
