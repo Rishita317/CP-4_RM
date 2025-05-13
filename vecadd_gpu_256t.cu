@@ -4,7 +4,7 @@
 // CUDA kernel to add the elements of two arrays
 __global__ void add(int n, float *x, float *y)
 {
-    // Compute the thread's unique index
+    // Compute the thread's unique index and stride
     int index = threadIdx.x;
     int stride = blockDim.x;
 
@@ -17,8 +17,7 @@ __global__ void add(int n, float *x, float *y)
 
 int main(void)
 {
-    // Updated problem size to 29 instead of 21
-    int N = 1 << 29;
+    int N = 1 << 20; // Size of the arrays (1 million elements)
 
     // Allocate memory for arrays using Unified Memory
     float *x, *y;
@@ -31,17 +30,16 @@ int main(void)
         y[i] = 2.0f;
     }
 
-    // TODO done: Updating the size to 256 
-    //Launch kernel with 256 threads and 1 block
-    
+    // Launch kernel with 256 threads and 1 block
     int threads_per_block = 256;
     int blocks_per_grid = 1;
-    add<<<blocks_per_grid, threads_per_block>>>(N, x, y);
+    // from the NVIDIA tutotial article
+    add<<<1, 256>>>(N, x, y);
 
     // Wait for GPU to finish before accessing on host
     cudaDeviceSynchronize();
 
-    // Check for errors (optional)
+    // Print a few results to verify correctness
     std::cout << "y[0] = " << y[0] << ", y[N-1] = " << y[N-1] << std::endl;
 
     // Free memory
