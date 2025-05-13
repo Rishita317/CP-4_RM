@@ -30,6 +30,12 @@ int main(void)
         x[i] = 1.0f;
         y[i] = 2.0f;
     }
+     
+    // TODO done: added the 3 lines
+    // Prefetch memory to the GPU
+    int deviceID = 0;
+    cudaMemPrefetchAsync((void *)x, N * sizeof(float), deviceID);
+    cudaMemPrefetchAsync((void *)y, N * sizeof(float), deviceID);
 
     // Define block size and calculate the number of blocks
     int blockSize = 256;
@@ -45,12 +51,11 @@ int main(void)
     cudaDeviceSynchronize();
 
     // Check for errors (all values should be 3.0f)
-    // adding varification
-
     float maxError = 0.0f;
     for (int i = 0; i < N; i++) {
-    maxError = fmax(maxError, fabs(y[i]-3.0f));
-    
+        maxError = fmax(maxError, fabs(y[i] - 3.0f));
+    }
+
     // Print a few results to verify correctness
     std::cout << "y[0] = " << y[0] << ", y[N-1] = " << y[N-1] << std::endl;
 
