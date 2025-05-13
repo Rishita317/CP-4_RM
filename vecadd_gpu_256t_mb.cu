@@ -45,6 +45,13 @@ int main(void)
     // Wait for GPU to finish before accessing on host
     cudaDeviceSynchronize();
 
+    // Check for errors (all values should be 3.0f)
+    // adding varification
+    
+    float maxError = 0.0f;
+    for (int i = 0; i < N; i++) {
+    maxError = fmax(maxError, fabs(y[i]-3.0f));
+    
     // Print a few results to verify correctness
     std::cout << "y[0] = " << y[0] << ", y[N-1] = " << y[N-1] << std::endl;
 
