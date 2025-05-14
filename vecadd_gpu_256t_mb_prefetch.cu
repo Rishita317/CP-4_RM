@@ -1,3 +1,9 @@
+// Name: Rishita Meharishi
+//Date: May 13,2025
+// Course CSC656-01 Spring 2025
+// Citations:NVDIA developer blog, github copilot to fix errors, class slides, 
+//modifiled the given code of my own .
+
 // step 7
 #include <iostream>
 #include <math.h>
