@@ -55,8 +55,9 @@ int main(void)
 
     float maxError = 0.0f;
     for (int i = 0; i < N; i++) {
-    maxError = fmax(maxError, fabs(y[i]-3.0f));
-    
+        maxError = fmax(maxError, fabs(y[i] - 3.0f));
+    } // <-- Missing closing brace added here
+
     // Print a few results to verify correctness
     std::cout << "y[0] = " << y[0] << ", y[N-1] = " << y[N-1] << std::endl;
 
