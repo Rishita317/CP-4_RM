@@ -24,7 +24,7 @@ __global__ void add(int n, float *x, float *y)
 
 int main(void)
 {
-    int N = 1 << 20; // Size of the arrays (1 million elements)
+    int N = 1 << 29; // Size of the arrays (1 million elements)
 
     // Allocate memory for arrays using Unified Memory
     float *x, *y;
